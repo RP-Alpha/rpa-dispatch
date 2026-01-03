@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    background: transparent;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    padding-top: 15vh;
+    /* Below notify */
+    padding-right: 2vh;
+}
+
+#dispatch-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 350px;
+    max-height: 50vh;
+    overflow: hidden;
+}
+
+.dispatch-alert {
+    background: rgba(15, 23, 42, 0.9);
+    color: #fff;
+    padding: 12px;
+    border-radius: 6px;
+    border-left: 4px solid #ef4444;
+    /* Red for high prio default */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    animation: slideIn 0.3s ease-out forwards;
+    position: relative;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.alert-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.alert-code {
+    font-weight: 700;
+    font-size: 14px;
+    color: #fca5a5;
+    background: rgba(239, 68, 68, 0.2);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.alert-title {
+    font-weight: 600;
+    font-size: 14px;
+    flex: 1;
+    margin-left: 8px;
+}
+
+.alert-info {
+    font-size: 12px;
+    color: #cbd5e1;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.alert-info i {
+    width: 16px;
+    text-align: center;
+}
+
+.alert-timer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: #ef4444;
+    width: 100%;
+    transition: width linear;
+}
+
+/* Police vs EMS colors */
+.type-police {
+    border-left-color: #3b82f6;
+}
+
+.type-police .alert-code {
+    color: #93c5fd;
+    background: rgba(59, 130, 246, 0.2);
+}
+
+.type-police .alert-timer {
+    background: #3b82f6;
+}
+
+.type-ambulance {
+    border-left-color: #ef4444;
+}
