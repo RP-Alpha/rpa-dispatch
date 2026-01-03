@@ -1,17 +1,40 @@
 # rpa-dispatch
 
-A modern, NUI-based dispatch and alert system.
+<div align="center">
 
-## Features
-- **Modern Overlay**: Clean, glassmorphism-style alert lists.
-- **Blip Management**: Auto-expiring blips for alerts.
-- **Exports**: Simple export to trigger alerts from other resources.
+![GitHub Release](https://img.shields.io/github/v/release/RP-Alpha/rpa-dispatch?style=for-the-badge&logo=github&color=blue)
+![GitHub commits](https://img.shields.io/github/commits-since/RP-Alpha/rpa-dispatch/latest?style=for-the-badge&logo=git&color=green)
+![License](https://img.shields.io/github/license/RP-Alpha/rpa-dispatch?style=for-the-badge&color=orange)
+![Downloads](https://img.shields.io/github/downloads/RP-Alpha/rpa-dispatch/total?style=for-the-badge&logo=github&color=purple)
 
-## Installation
-1. Ensure `rpa-lib` is started.
-2. Add `ensure rpa-dispatch` to your `server.cfg`.
+**Emergency Dispatch System**
 
-## Usage
+</div>
+
+---
+
+## ✨ Features
+
+- 🚨 **Alert System** - Modern NUI overlay for incoming alerts
+- 📍 **Blip Management** - Auto-expiring location markers
+- 🔗 **Export API** - Easy integration with other resources
+- 🎨 **Glassmorphism** - Clean, modern design
+
+---
+
+## 📥 Installation
+
+1. Download the [latest release](https://github.com/RP-Alpha/rpa-dispatch/releases/latest)
+2. Extract to your `resources` folder
+3. Add to `server.cfg`:
+   ```cfg
+   ensure rpa-dispatch
+   ```
+
+---
+
+## 📚 Exports
+
 ```lua
 exports['rpa-dispatch']:SendAlert({
     message = "Suspicious Activity",
@@ -21,8 +44,12 @@ exports['rpa-dispatch']:SendAlert({
 })
 ```
 
-## Credits
-- RP-Alpha Development Team
+---
 
-## License
-MIT
+## 📄 License
+
+MIT License - see [LICENSE](LICENSE) for details.
+
+<div align="center">
+  <sub>Built with ❤️ by <a href="https://github.com/RP-Alpha">RP-Alpha</a></sub>
+</div>
