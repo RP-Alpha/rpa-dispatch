@@ -10,12 +10,59 @@ local function GetStreet(coords)
     end
 end
 
-RegisterNetEvent('rpa-dispatch:client:SendAlert', function(data)
-    -- Check if player is on duty and matches job
-    local PlayerJob = exports['rpa-lib']:GetFramework().Functions.GetPlayerData().job -- QB Specific, abstract later
+-- Get player job using rpa-lib bridge
+local function GetPlayerJob()
+    local fwName = exports['rpa-lib']:GetFrameworkName()
     
-    -- For now assume everyone sees it for testing, or filter by 'police'/'ambulance'
-    -- In production: if PlayerJob.name ~= data.job and PlayerJob.type ~= 'leo' then return end
+    if fwName == 'qb-core' or fwName == 'qbox' then
+        local PlayerData = exports['rpa-lib']:GetFramework().Functions.GetPlayerData()
+        if PlayerData and PlayerData.job then
+            return PlayerData.job
+        end
+    elseif fwName == 'ox_core' then
+        -- ox_core uses different structure
+        local player = exports.ox_core:GetPlayer()
+        if player then
+            return player.getGroup()
+        end
+    end
+    
+    return nil
+end
+
+-- Check if player should receive this alert
+local function ShouldReceiveAlert(alertJob)
+    local playerJob = GetPlayerJob()
+    if not playerJob then return false end
+    
+    -- If no job specified on alert, everyone sees it (testing mode)
+    if not alertJob or alertJob == '' then
+        return true
+    end
+    
+    -- Check job match
+    if playerJob.name == alertJob then
+        return true
+    end
+    
+    -- Check job type (for LEO alerts that any police job should see)
+    if alertJob == 'police' and playerJob.type == 'leo' then
+        return true
+    end
+    
+    -- Check for EMS alerts
+    if alertJob == 'ambulance' and (playerJob.name == 'ambulance' or playerJob.name == 'ems') then
+        return true
+    end
+    
+    return false
+end
+
+RegisterNetEvent('rpa-dispatch:client:SendAlert', function(data)
+    -- Check if player should receive this alert based on job
+    if not ShouldReceiveAlert(data.job) then
+        return
+    end
 
     SendNUIMessage({
         action = 'alert',
@@ -32,10 +79,15 @@ RegisterNetEvent('rpa-dispatch:client:SendAlert', function(data)
         AddTextComponentString(data.code .. " - " .. data.title)
         EndTextCommandSetBlipName(blip)
         
-        SetTimeout(10000, function()
-            RemoveBlip(blip)
+        SetTimeout(60000, function() -- 60 seconds instead of 10
+            if DoesBlipExist(blip) then
+                RemoveBlip(blip)
+            end
         end)
     end
+    
+    -- Play alert sound
+    PlaySoundFrontend(-1, "Menu_Accept", "Phone_SoundSet_Default", true)
 end)
 
 -- Export to be used by other resources to trigger alerts
